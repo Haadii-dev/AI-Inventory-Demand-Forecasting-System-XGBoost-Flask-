@@ -1,0 +1,209 @@
+# AI Inventory Demand Forecasting System (XGBoost + Flask)
+
+An end-to-end machine learning system covering data processing, feature engineering, model training, evaluation, and deployment.
+
+A machine learning web application that predicts daily inventory demand using historical sales patterns.  
+Built as a final-year dissertation project focused on improving inventory management for SMEs.
+
+---
+
+## Project Overview
+
+Small and Medium-Sized Enterprises (SMEs) often struggle with inventory management due to:
+- Limited resources
+- Poor demand forecasting
+- Disconnected data systems
+
+This project demonstrates how **AI-driven forecasting** can improve decision-making by:
+- Predicting daily sales demand
+- Reducing stockouts and overstocking
+- Enabling data-driven inventory planning
+
+---
+##  Dissertation Context
+
+This project was developed as part of my final-year dissertation, focusing on the application of machine learning techniques to improve inventory demand forecasting for Small and Medium-Sized Enterprises (SMEs).
+
+The research explored how data-driven forecasting models can support better stock management decisions, reduce waste, and improve operational efficiency.
+
+---
+## Model & Approach
+
+- Model: **XGBoost Regressor**
+- Dataset: Retail demand dataset (~9 million records)
+- Features:
+  - Date-based (day, month, weekday, weekend)
+  - Aggregated statistics:
+    - Store average sales
+    - Item average sales
+    - Store-item interactions
+    - Day-of-week trends
+
+---
+##  Methodology
+
+The project followed a structured machine learning pipeline:
+
+1. Data preprocessing and cleaning  
+2. Feature engineering (date-based and aggregated features)  
+3. Model training using XGBoost  
+4. Hyperparameter tuning with RandomizedSearchCV  
+5. Model evaluation using RMSE and MAPE  
+6. Deployment via a Flask web application  
+
+This approach ensured both strong predictive performance and practical usability.
+---
+## Model Performance
+
+| Metric     | Value   |
+|-----------|--------|
+| RMSE      | 7.25   |
+| MAPE      | 13.11% |
+| Accuracy  | 86.89% |
+
+---
+
+## Demo Features
+
+- Web interface built with Flask
+- Real-time prediction from:
+  - Store ID
+  - Item ID
+  - Date
+- Recent prediction history
+- Model performance display
+- Visual insights from training
+
+---
+##  Project Structure
+```
+AI INVENTORY DEMAND FORECASTING SYSTEM (XGBOOST + FLASK)/
+├── app.py
+├──xgb_sales_model.pkl
+├──aggregates.pkl
+├── static/
+│   ├──css
+│      ├──style.css
+│   ├──js
+│      ├──main.js
+│      ├──images/all of the images...
+├── templates/
+│   ├──index.html
+├── requirements.txt
+└── README.md
+
+```
+## Screenshots
+
+### Prediction Interface
+![Full Page Image](static\images\Dashboard Image.png)
+![After](static\images\After.png)
+
+
+### Model Insights
+![Feature Importances](static\images\Feature-Importance.png)
+![distribution of predicted sales](static\images\Distribution of predicted sales.png)
+![Actual vs Predicted sales](static\images\Actual vs Predicted values.png)
+![Forecasted total sales over time](static\images\FORECASTED TOTAL SALES OVER TIME.png)
+![Avg. predicted sales by store](static\images\avg predicted sales by store.png)
+*(Replace with your own screenshots later)*
+
+---
+
+## Model Insights
+
+The project includes visual analysis such as:
+- Feature importance
+- Actual vs predicted comparison
+- Residual distribution
+- Forecasted sales trends
+
+These help evaluate model performance and interpret predictions.
+
+---
+
+## Tech Stack
+
+- Python
+- Pandas / NumPy
+- Scikit-learn
+- XGBoost
+- Flask
+- HTML / CSS / JavaScript
+
+---
+
+## Installation & Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Haadii-dev/AI-Inventory-Demand-Forecasting-System-XGBoost-Flask-
+cd inventory-forecast
+```
+### Install dependencies:
+```
+pip install -r requirements.txt
+```
+### Run the app:
+```
+python app.py
+```
+### Open in browser:
+```
+http://127.0.0.1:5000
+```
+---
+## API Usage
+### Endpoint
+``` bash
+POST /predict
+```
+### Example Request
+```JSON
+{
+  "store": 1,
+  "item": 1,
+  "date": "2017-04-10"
+}
+```
+### Example Response
+```JSON
+{
+  "store": 1,
+  "item": 1,
+  "date": "2017-04-10",
+  "predicted_sales": 13.42
+}
+```
+
+### Health Check
+```bash
+GET /health
+```
+--- 
+## Limitations
+- No external factors (weather, promotions, economy)
+- Static model (no automatic retraining)
+- Uses historical averages heavily
+---
+## Future Improvements
+- Add time-series models (LSTM, Prophet)
+- Integrate external data sources
+- Build automated retraining pipeline (MLOps)
+---
+## Key Learning Outcomes
+- End-to-end ML pipeline development
+- Feature engineering for time-series data
+- Model deployment with Flask
+- Building real-world AI applications
+---
+## License
+
+This project is for academic and portfolio purposes.
+
+---
+## Author
+
+**M.Hammad Ullah**
+* **LinkedIn:** [Click Here](www.linkedin.com/in/hammad-ullaah)

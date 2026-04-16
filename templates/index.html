@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Inventory Demand Forecasting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-container">
+            <div class="brand">AI Inventory Forecasting</div>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#predict">Predict</a>
+                <a href="#insights">Insights</a>
+                <a href="#api">API</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-wrapper">
+        <div class="container">
+            <section class="card hero" id="about">
+                <span class="badge">Final Year Project</span>
+                <h1>AI Inventory Demand Forecasting System</h1>
+                <p class="subtitle">
+                    A machine learning web application built with XGBoost and Flask to predict
+                    daily inventory demand from store, item, and date inputs.
+                </p>
+
+                <div class="highlights">
+                    <div class="highlight">
+                        <strong>Model</strong>
+                        XGBoost regressor trained on retail demand data with engineered time and aggregate features.
+                    </div>
+                    <div class="highlight">
+                        <strong>Purpose</strong>
+                        Support SME-style inventory planning with lightweight AI-based forecasting.
+                    </div>
+                    <div class="highlight">
+                        <strong>Tech Stack</strong>
+                        Python, Pandas, Scikit-learn, XGBoost, Flask, HTML, CSS, JavaScript.
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h3>About This Project</h3>
+                    <p>
+                        This application is based on my final-year dissertation project focused on
+                        improving inventory decision-making for SMEs using machine learning.
+                        The system uses engineered historical sales features and an XGBoost model
+                        to generate demand forecasts through a lightweight Flask interface.
+                    </p>
+                </div>
+
+                <div class="disclaimer-box">
+                    <strong>Note</strong>
+                    Predictions are based on historical demand patterns and should support business decisions, not replace them.
+                </div>
+            </section>
+
+            <section class="card form-card" id="predict">
+                <div class="form-header">
+                    <h2 class="form-title">Predict Daily Sales</h2>
+                    <p class="form-subtitle">Enter a store, item, and date to generate a forecast.</p>
+                </div>
+
+                <form method="POST" id="forecastForm" novalidate>
+                    <label for="store">Store ID</label>
+                    <input
+                        type="number"
+                        id="store"
+                        name="store"
+                        placeholder="e.g. 1"
+                        value="{{ form_data.store }}"
+                        min="1"
+                        required
+                    >
+
+                    <label for="item">Item ID</label>
+                    <input
+                        type="number"
+                        id="item"
+                        name="item"
+                        placeholder="e.g. 1"
+                        value="{{ form_data.item }}"
+                        min="1"
+                        required
+                    >
+
+                    <label for="date">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value="{{ form_data.date }}"
+                        required
+                    >
+
+                    <div class="button-group">
+                        <button type="submit" id="submitBtn">Generate Forecast</button>
+                        <button type="button" class="secondary-btn" id="resetBtn">Reset</button>
+                    </div>
+
+                    <p class="helper-text">
+                        Sample values: Store <strong>1</strong>, Item <strong>1</strong>, Date <strong>2017-04-10</strong>
+                    </p>
+                </form>
+
+                <div id="clientError" class="error hidden"></div>
+
+                {% if prediction is not none %}
+                <div class="result">
+                    <div class="result-label">Predicted Sales</div>
+                    <div class="result-value">{{ "%.2f"|format(prediction) }}</div>
+
+                    <div class="prediction-meta">
+                        <div><strong>Store:</strong> {{ form_data.store }}</div>
+                        <div><strong>Item:</strong> {{ form_data.item }}</div>
+                        <div><strong>Date:</strong> {{ form_data.date }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if error %}
+                <div class="error">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <div class="metrics-card">
+                    <strong>Model Performance</strong>
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <span class="metric-label">RMSE</span>
+                            <span class="metric-value">{{ rmse }}</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">MAPE</span>
+                            <span class="metric-value">{{ mape }}</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Accuracy</span>
+                            <span class="metric-value">{{ accuracy }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if prediction_history %}
+                <div class="history-card">
+                    <strong>Recent Predictions</strong>
+                    <div class="history-list">
+                        {% for entry in prediction_history %}
+                        <div class="history-item">
+                            <div class="history-main">
+                                <span>Store {{ entry.store }}</span>
+                                <span>Item {{ entry.item }}</span>
+                                <span>{{ entry.date }}</span>
+                            </div>
+                            <div class="history-sub">
+                                <span>Predicted Sales: <strong>{{ entry.prediction }}</strong></span>
+                                <span>{{ entry.timestamp }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <section class="content-section" id="insights">
+            <div class="section-inner">
+                <div class="section-heading">
+                    <h2>Model Insights</h2>
+                    <p>Visual outputs generated during training and evaluation of the forecasting model.</p>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <img src="{{ url_for('static', filename='/images/Feature-Importance.png') }}" alt="Feature importances chart">
+                        <h3>Feature Importances</h3>
+                        <p>Shows which engineered features contributed most to the model’s predictions.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <img src="{{ url_for('static', filename='/images/Actual vs Predicted values.png') }}" alt="Actual vs predicted chart">
+                        <h3>Actual vs Predicted</h3>
+                        <p>Compares model predictions with actual sales values on validation data.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <img src="{{ url_for('static', filename='/images/Residual Destribution.png') }}" alt="Residual distribution chart">
+                        <h3>Residual Distribution</h3>
+                        <p>Helps assess how prediction errors are distributed around zero.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <img src="{{ url_for('static', filename='/images/FORECASTED TOTAL SALES OVER TIME.png') }}" alt="Forecasted sales over time chart">
+                        <h3>Forecasted Sales Over Time</h3>
+                        <p>Displays overall predicted sales trends across the test period.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="api">
+            <div class="section-inner api-section">
+                <div class="section-heading">
+                    <h2>API Example</h2>
+                    <p>The application also exposes a simple JSON prediction endpoint.</p>
+                </div>
+
+                <div class="api-card">
+                    <h3>POST /predict</h3>
+                    <p>Send a JSON payload with store, item, and date.</p>
+
+                    <div class="code-block">
+<pre>{
+  "store": 1,
+  "item": 1,
+  "date": "2017-04-10"
+}</pre>
+                    </div>
+
+                    <h3>Example Response</h3>
+                    <div class="code-block">
+<pre>{
+  "store": 1,
+  "item": 1,
+  "date": "2017-04-10",
+  "predicted_sales": 13.42
+}</pre>
+                    </div>
+
+                    <p class="api-note">
+                        You can test the API route locally after running the Flask app.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p><strong>AI Inventory Demand Forecasting System</strong></p>
+            <p>Built as a final-year dissertation project using XGBoost and Flask.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
