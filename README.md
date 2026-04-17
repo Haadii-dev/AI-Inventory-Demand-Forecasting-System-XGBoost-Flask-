@@ -96,18 +96,17 @@ AI INVENTORY DEMAND FORECASTING SYSTEM (XGBOOST + FLASK)/
 ## Screenshots
 
 ### Prediction Interface
-![Full Page Image](static/images/Dashboard Image.png)
+![Full Page Image](static/images/dashboard_image.png)
 ![Result](static/images/After.png)
 
 
 ### Model Insights
 
-![Feature Importances]()
 ![Feature Importance](static/images/Feature-Importance.png)
-![distribution of predicted sales](static/images/Distribution of predicted sales.png)
-![Actual vs Predicted sales](static/images/Actual vs Predicted values.png)
-![Forecasted total sales over time](static/images/FORECASTED TOTAL SALES OVER TIME.png)
-![Avg. predicted sales by store](static/images/avg predicted sales by store.png)
+![distribution of predicted sales](static/images/predicted_sales_distribution.png)
+![Actual vs Predicted sales](static/images/actual_vs_predicted.png)
+![Forecasted total sales over time](static/images/forecasted_sales_over_time.png)
+![Avg. predicted sales by store](static/images/avg_sales_by_store.png)
 *(Replace with your own screenshots later)*
 
 ---
